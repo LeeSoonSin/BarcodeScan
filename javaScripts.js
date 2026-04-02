@@ -1,71 +1,111 @@
-// 1. 오디오 객체 생성 (파일 경로 지정)
+// 상태 변수
+let totalCount = 0;
+let targetPrefix = null; 
+let currentDetectedBarcode = null;
+
+// 효과음 설정
 const errorSound = new Audio('false.mp3');
+const successSound = new Audio('true.mp3');
 
-let targetBarcode = null;
-let count = 0;
-let isScanning = false; // 현재 스캔 처리 중인지 확인하는 변수
-let totalCount = 0; // 누적 합계를 저장할 변수
-let targetBarcodePrefix = null; // 기준 바코드(앞부분) 저장용 (선택 사항)
-
+/**
+ * 1. 실시간 인식 (카메라 피드백)
+ */
 function onScanSuccess(decodedText) {
-    if (isScanning) return;
-    isScanning = true;
+    currentDetectedBarcode = decodedText;
+    const statusBar = document.getElementById('scan-status-bar');
+    statusBar.innerText = "인식됨: " + decodedText;
+    statusBar.classList.add('detected');
+}
 
-    // 1. 바코드의 마지막 한 글자를 가져와서 숫자로 변환 (1, 2, 3, 4 중 하나)
-    const unitCount = parseInt(decodedText.slice(-1));
-
-    // 숫자가 1~4 사이인지 확인 (유효성 검사)
-    if (!isNaN(unitCount) && unitCount >= 1 && unitCount <= 4) {
-        
-        // 2. 누적 합계 계산 (+=)
-        totalCount += unitCount;
-        
-        // 화면 업데이트
-        document.getElementById('count-view').innerText = totalCount;
-        
-        // 첫 스캔이라면 기준 텍스트 표시 (참고용)
-        if (!targetBarcodePrefix) {
-            targetBarcodePrefix = decodedText;
-            document.getElementById('target-text').innerText = "검수 시작됨";
-        }
-
-        // 성공 알림 (선택 사항: 진동)
-        if(navigator.vibrate) navigator.vibrate(50);
-
-    } else {
-        // 1~4가 아니거나 숫자가 아닐 경우 에러 처리
-        playErrorSound();
-        triggerVisualError();
-        alert("유효하지 않은 바코드입니다 (끝자리 1-4만 가능)");
+/**
+ * 2. 스캔 버튼 클릭 (검수 및 합산)
+ */
+document.getElementById('scan-trigger-btn').onclick = () => {
+    if (!currentDetectedBarcode) {
+        alert("바코드를 먼저 인식시켜주세요!");
+        return;
     }
 
-    // 3. 중복 스캔 방지를 위한 지연 시간 (1.5초)
-    setTimeout(() => {
-        isScanning = false;
-    }, 1500);
-}
+    // 바코드 분리: 앞부분(ID), 뒷자리(수량)
+    const currentPrefix = currentDetectedBarcode.slice(0, -1);
+    const unitCount = parseInt(currentDetectedBarcode.slice(-1));
 
-// 초기화 버튼 클릭 시 누적 값도 0으로
-document.getElementById('reset-btn').onclick = () => {
-    totalCount = 0;
-    targetBarcodePrefix = null;
-    document.getElementById('target-text').innerText = "스캔 대기 중";
-    document.getElementById('count-view').innerText = "0";
-    alert("모든 데이터가 초기화되었습니다.");
+    // 유효성 검사 (뒷자리 1~4)
+    if (isNaN(unitCount) || unitCount < 1 || unitCount > 4) {
+        handleError("잘못된 수량입니다 (끝자리 1-4만 가능)");
+        return;
+    }
+
+    // 품목 비교 로직
+    if (!targetPrefix) {
+        // 첫 스캔인 경우 기준 설정
+        targetPrefix = currentPrefix;
+        document.getElementById('target-text').innerText = targetPrefix;
+        handleSuccess(unitCount);
+    } else {
+        // 기존 기준과 일치하는지 확인
+        if (currentPrefix === targetPrefix) {
+            handleSuccess(unitCount);
+        } else {
+            handleError("다른 품목입니다! 기준: " + targetPrefix);
+        }
+    }
 };
 
-// 소리 재생 함수
-function playErrorSound() {
-    errorSound.pause();        // 재생 중일 수 있으므로 멈춤
-    errorSound.currentTime = 0; // 처음으로 되돌림
-    errorSound.play().catch(e => {
-        console.log("소리 재생 실패:", e);
-        // 브라우저 정책상 사용자의 첫 클릭이 있어야 소리가 날 수 있습니다.
-    });
+// 성공 시 실행
+function handleSuccess(amount) {
+    successSound.currentTime = 0;
+    successSound.play().catch(e => console.log("재생 오류:", e));
+    
+    if (navigator.vibrate) navigator.vibrate(50);
+
+    totalCount += amount;
+    document.getElementById('count-view').innerText = totalCount;
+    
+    // 다음 스캔을 위해 초기화
+    resetStatusBar();
 }
 
-function triggerVisualError() {
-    const card = document.getElementById('display-card');
-    card.classList.add('error-bg');
-    setTimeout(() => card.classList.remove('error-bg'), 500);
+// 에러 시 실행
+function handleError(msg) {
+    errorSound.currentTime = 0;
+    errorSound.play().catch(e => console.log("재생 오류:", e));
+    
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+    const card = document.getElementById("display-card");
+    card.classList.add("error-bg");
+    setTimeout(() => card.classList.remove("error-bg"), 500);
+    
+    alert(msg);
+    resetStatusBar();
 }
+
+// 상태표시줄 초기화
+function resetStatusBar() {
+    currentDetectedBarcode = null;
+    const statusBar = document.getElementById('scan-status-bar');
+    statusBar.innerText = "바코드를 비춰주세요...";
+    statusBar.classList.remove('detected');
+}
+
+// 초기화 버튼
+document.getElementById("reset-btn").onclick = () => {
+    if (confirm("기준 품목과 누적 수량을 모두 초기화할까요?")) {
+        totalCount = 0;
+        targetPrefix = null;
+        document.getElementById("count-view").innerText = "0";
+        document.getElementById("target-text").innerText = "-";
+        resetStatusBar();
+    }
+};
+
+/**
+ * 3. 스캐너 초기화 (1D 바코드 최적화)
+ */
+const html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+    fps: 30,
+    qrbox: { width: 350, height: 150 },
+    aspectRatio: 1.777778
+});
+html5QrcodeScanner.render(onScanSuccess);
