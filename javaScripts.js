@@ -42,7 +42,7 @@ function processBarcode(barcode) {
 
 // 핵심: PC 서버로 데이터 전송
 function sendToPC(prefix, count) {
-    const pcIP = "192.168.0.10"; // ★ 실제 PC IP로 수정 필수
+    const pcIP = "192.168.219.105"; // ★ 실제 PC IP로 수정 필수
     fetch(`http://${pcIP}:3000`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
