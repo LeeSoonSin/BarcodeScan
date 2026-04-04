@@ -2,38 +2,32 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>바코드 검수 매니저</title>
-    <link rel="manifest" href="manifest.json">
-    <!-- 바코드 스캐너 라이브러리 -->
-    <script src="https://unpkg.com/html5-qrcode"></script>
-    <!-- 외부 스타일시트 연결 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>바코드 검수 매니저 (TC22 전용)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 카메라 영역 -->
-    <div id="reader"></div>
+    <!-- 실시간 인식 상태 표시줄 (TC22 스캔 상태) -->
+    <div id="scan-status-bar">스캔 버튼을 눌러주세요</div>
 
-    <!-- 실시간 인식 상태 표시줄 -->
-    <div id="scan-status-bar">바코드를 비춰주세요...</div>
+    <!-- 스캐너 데이터를 받을 숨겨진 입력창 (항상 포커스 유지) -->
+    <input type="text" id="barcode-input" autofocus autocomplete="off" style="position: absolute; opacity: 0; pointer-events: none;">
 
-    <!-- 수동 스캔 버튼 -->
-    <div class="button-container">
-        <button id="scan-trigger-btn">스캔하기 (확인)</button>
-    </div>
-
-    <!-- 정보 표시 영역 -->
+    <!-- 정보 표시 영역 (메인 UI) -->
     <div class="info-box" id="display-card">
         <div class="target">기준 품목: <span id="target-text">-</span></div>
         <div class="count" id="count-view">0</div>
         <div class="sub-text">누적 수량 합계</div>
     </div>
 
-    <!-- 초기화 버튼 -->
-    <button id="reset-btn">데이터 초기화 (새 품목)</button>
+    <!-- 조작 버튼 영역 -->
+    <div class="button-container">
+        <!-- 물리 버튼 보조용 버튼 -->
+        <button id="scan-trigger-btn">스캔 대기 중...</button>
+        <button id="reset-btn">데이터 초기화 (새 품목)</button>
+    </div>
 
-    <!-- 외부 자바스크립트 연결 -->
     <script src="javaScripts.js"></script>
 </body>
 </html>
