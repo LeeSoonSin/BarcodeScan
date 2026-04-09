@@ -25,8 +25,28 @@
     <div class="button-container">
         <!-- 물리 버튼 보조용 버튼 -->
         <button id="scan-trigger-btn">스캔 대기 중...</button>
+        <button id="view-status-btn" style="background: #2ecc71;">현황 보기</button>
         <button id="undo-btn"">직전 스캔 취소</button>
         <button id="reset-btn">데이터 초기화 (새 품목)</button>
+    </div>
+    <div id="status-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>📊 실시간 검수 현황</h2>
+        <div id="inventory-list-wrapper">
+            <table id="inventory-table">
+                <thead>
+                    <tr>
+                        <th>품목 ID</th>
+                        <th>합계 수량</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-body">
+                    <!-- 여기에 데이터가 동적으로 들어갑니다 -->
+                </tbody>
+            </table>
+        </div>
+        <button id="close-modal">닫기</button>
+        </div>
     </div>
 
     <script src="javaScripts.js"></script>

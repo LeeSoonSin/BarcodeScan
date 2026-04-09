@@ -88,3 +88,47 @@ button:active { transform: translateY(3px); box-shadow: none; }
 #reset-btn:active { background: #95a5a6; transform: translateY(2px); }
 
 .error-bg { background: #ff4757 !important; transition: 0.2s; }
+
+/* 모달 배경 */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* 모달 박스 */
+.modal-content {
+    background: white;
+    width: 90%;
+    max-height: 80%;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+/* 표 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.1rem;
+}
+
+th { background: #f8f9fa; }
+
+#close-modal {
+    background: #34495e;
+    width: 100%;
+    padding: 15px;
+}
