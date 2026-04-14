@@ -8,44 +8,40 @@
 </head>
 <body>
 
-    <!-- 실시간 인식 상태 표시줄 (TC22 스캔 상태) -->
     <div id="scan-status-bar">스캔 버튼을 눌러주세요</div>
 
-    <!-- 스캐너 데이터를 받을 숨겨진 입력창 (항상 포커스 유지) -->
-    <input type="text" id="barcode-input" autofocus autocomplete="off" inputmode="none" style="position: absolute; opacity: 0; pointer-events: none;">
+    <input type="text" id="barcode-input" autofocus autocomplete="off" inputmode="none" 
+           style="position: absolute; opacity: 0; top: -100px;">
 
-    <!-- 정보 표시 영역 (메인 UI) -->
     <div class="info-box" id="display-card">
         <div class="target">기준 품목: <span id="target-text">-</span></div>
         <div class="count" id="count-view">0</div>
         <div class="sub-text">누적 수량 합계</div>
     </div>
 
-    <!-- 조작 버튼 영역 -->
     <div class="button-container">
-        <!-- 물리 버튼 보조용 버튼 -->
-        <button id="scan-trigger-btn">스캔 대기 중...</button>
+        <button id="scan-trigger-btn" style="background: #3498db;">여기를 터치 후 스캔하세요</button>
         <button id="view-status-btn" style="background: #2ecc71;">현황 보기</button>
-        <button id="undo-btn"">직전 스캔 취소</button>
+        <button id="undo-btn">직전 스캔 취소</button>
         <button id="reset-btn">데이터 초기화 (새 품목)</button>
     </div>
+
     <div id="status-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <h2>📊 실시간 검수 현황</h2>
-        <div id="inventory-list-wrapper">
-            <table id="inventory-table">
-                <thead>
-                    <tr>
-                        <th>품목 ID</th>
-                        <th>합계 수량</th>
-                    </tr>
-                </thead>
-                <tbody id="inventory-body">
-                    <!-- 여기에 데이터가 동적으로 들어갑니다 -->
-                </tbody>
-            </table>
-        </div>
-        <button id="close-modal">닫기</button>
+        <div class="modal-content">
+            <h2>📊 실시간 검수 현황</h2>
+            <div id="inventory-list-wrapper">
+                <table id="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>품목 ID</th>
+                            <th>합계 수량</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-body">
+                        </tbody>
+                </table>
+            </div>
+            <button id="close-modal">닫기</button>
         </div>
     </div>
 
