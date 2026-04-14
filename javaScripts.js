@@ -134,17 +134,25 @@ document.getElementById("close-modal").onclick = () => {
     document.getElementById("status-modal").style.display = "none";
 };
 
+// 10. 기준 품목 교체 버튼 (현황 기록 유지 버전)
 document.getElementById("reset-btn").onclick = () => {
-    if (confirm("모든 데이터를 초기화할까요?")) {
-        totalCount = 0;
-        targetPrefix = null;
-        undoStack = [];
-        localInventory = {};
-        document.getElementById("count-view").innerText = "0";
+    // 메시지도 버튼의 역할에 맞게 수정했습니다.
+    if (confirm("현재 기준 품목을 해제하고 새로운 상품을 스캔하시겠습니까?\n(현황판의 누적 데이터는 유지됩니다)")) {
+        
+        targetPrefix = null; // 1. 기준 품목 해제
+        totalCount = 0;      // 2. 현재 화면에 표시되는 '품목 수량' 초기화
+        undoStack = [];      // 3. 새 품목을 위해 취소 기록 비움
+        
+        // UI 업데이트
         document.getElementById("target-text").innerText = "-";
-        document.getElementById('scan-status-bar').innerText = "스캔 버튼을 눌러주세요";
+        document.getElementById("count-view").innerText = "0";
+        document.getElementById('scan-status-bar').innerText = "새로운 품목을 스캔하세요";
         document.getElementById('scan-status-bar').className = "";
+        
         updateUndoUI();
+
+        // ★ 핵심: localInventory = {}; 이 줄을 삭제했습니다.
+        // 이로써 [현황 보기]를 눌렀을 때 이전 품목들의 기록이 사라지지 않고 계속 쌓입니다.
     }
 };
 
