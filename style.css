@@ -1,134 +1,161 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 body {
-    font-family: -apple-system, "Malgun Gothic", sans-serif;
-    text-align: center;
-    background: #f4f4f9;
-    margin: 0;
-    padding: 15px;
-    touch-action: manipulation;
-    overflow: hidden; /* 스크롤 방지 */
-}
-
-#scan-status-bar {
-    background: #34495e;
-    color: #ffffff;
-    padding: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-#scan-status-bar.detected { background: #27ae60; }
-#scan-status-bar.error { background: #e74c3c; }
-
-.info-box {
-    background: white;
-    padding: 40px 20px; /* 더 넓게 변경 */
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.count {
-    font-size: 6rem; /* 숫자를 더 크게 */
-    font-weight: bold;
-    color: #2ecc71;
-}
-
-#scan-trigger-btn {
-    width: 100%;
-    padding: 20px;
-    font-size: 1.2rem;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    margin-bottom: 10px;
-}
-
-.button-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-button {
-    flex: 1; /* 버튼 너비를 동일하게 */
-    padding: 20px 10px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: all 0.1s;
-}
-
-button:active { transform: translateY(3px); box-shadow: none; }
-
-#undo-btn {
-    background: #f39c12;
-}
-
-#undo-btn:active { background: #e67e22; transform: translateY(2px); }
-
-/* 취소 가능 횟수 표시용 작은 텍스트 */
-.undo-count {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: normal;
-    margin-top: 4px;
-}
-
-#reset-btn {
-    background: #7f8c8d;
-}
-
-#reset-btn:active { background: #95a5a6; transform: translateY(2px); }
-
-.error-bg { background: #ff4757 !important; transition: 0.2s; }
-
-/* 모달 배경 */
-.modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
     display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    align-items: flex-start;
+    padding: 10px;
+    background-color: #f8f9fa;
+    margin: 0;
+    min-height: 100vh;
 }
 
-/* 모달 박스 */
-.modal-content {
+.container {
+    width: 100%;
+    max-width: 480px; /* 모바일/Zebra 화면에 딱 맞게 제한 */
     background: white;
-    width: 90%;
-    max-height: 80%;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    overflow-y: auto;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* 표 스타일 */
+h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.customer-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.customer-select-group label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+select {
+    padding: 8px;
+    font-size: 15px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    font-weight: bold;
+    background-color: #fff;
+    width: 100%;
+}
+
+.btn-group-top {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.btn-excel {
+    background-color: #0b5375;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-clear {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.table-container {
+    max-height: 50vh; /* 화면 높이에 유동적으로 반응 */
+    overflow-y: auto;
+    margin-bottom: 15px;
+    border: 2px solid #333;
+    border-radius: 4px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    text-align: center;
 }
 
 th, td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    padding: 8px 4px;
+    font-size: 14px;
+    word-break: break-all;
 }
 
-th { background: #f8f9fa; }
+th {
+    background-color: #f1f1f1;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid #333;
+}
 
-#close-modal {
-    background: #34495e;
-    width: 100%;
-    padding: 15px;
+.btn-delete {
+    color: #e63946;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 16px;
+    padding: 2px 6px;
+}
+
+.input-section {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.input-section input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.btn-kbd-toggle {
+    background: #e9ecef;
+    border: 1px solid #ccc;
+    padding: 9px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-submit {
+    background-color: #0b5375;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
 }

@@ -3,48 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>바코드 검수 매니저 (TC22 전용)</title>
+    <title>유니락 바코드 스캐너 웹페이지</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="scan-status-bar">스캔 버튼을 눌러주세요</div>
+<div class="container">
+    <h1>유니락 바코드 스캐너</h1>
 
-    <input type="text" id="barcode-input" autofocus autocomplete="off" inputmode="none" 
-           style="position: absolute; opacity: 0; top: -100px;">
-
-    <div class="info-box" id="display-card">
-        <div class="target">기준 품목: <span id="target-text">-</span></div>
-        <div class="count" id="count-view">0</div>
-        <div class="sub-text">누적 수량 합계</div>
-    </div>
-
-    <div class="button-container">
-        <button id="scan-trigger-btn" style="background: #3498db;">여기를 터치 후 스캔하세요</button>
-        <button id="view-status-btn" style="background: #2ecc71;">현황 보기</button>
-        <button id="undo-btn">직전 스캔 취소</button>
-        <button id="reset-btn">데이터 초기화 (새 품목)</button>
-    </div>
-
-    <div id="status-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <h2>📊 실시간 검수 현황</h2>
-            <div id="inventory-list-wrapper">
-                <table id="inventory-table">
-                    <thead>
-                        <tr>
-                            <th>품목 ID</th>
-                            <th>합계 수량</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inventory-body">
-                        </tbody>
-                </table>
-            </div>
-            <button id="close-modal">닫기</button>
+    <div class="header-section">
+        <div class="customer-select-group">
+            <label for="customerSelect">고객사 선택 :</label>
+            <select id="customerSelect"></select>
+        </div>
+        <div class="btn-group-top">
+            <button class="btn-excel" onclick="exportToExcel()">엑셀 저장</button>
+            <button class="btn-clear" onclick="clearAllData()">전체 비우기</button>
         </div>
     </div>
 
-    <script src="javaScripts.js"></script>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 15%;">NO</th>
+                    <th style="width: 30%;">고객사</th>
+                    <th style="width: 40%;">품목코드</th>
+                    <th style="width: 15%;">삭제</th>
+                </tr>
+            </thead>
+            <tbody id="scanTableBody">
+                <!-- 스캔 데이터 동적 삽입 -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="input-section">
+    <input type="text" 
+           id="barcodeInput" 
+           placeholder="바코드 스캔 대기 중..." 
+           autofocus 
+           inputmode="none" 
+           autocomplete="off" 
+           spellcheck="false">
+    <button class="btn-submit" onclick="addBarcode()">입력</button>
+</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
